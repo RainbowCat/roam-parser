@@ -3,19 +3,15 @@
   (:require
     [roam-parser.grammar :refer :all]
     [clojure.string :as str]
-    [instaparse.core :as insta]
+    [instaparse.core :as insta :refer [defparser]]
     )
   (:gen-class))
 
-(def as-and-bs
-  (insta/parser
-    "S = AB*
-     AB = A B
-     A = 'a'+
-     B = 'b'+"))
+(defparser as-and-bs "grammar.bnf" :input-format :abnf)
 
 (defn -main
   [& args]
+  ;(clojure.java.io/resource "grammar.bnf")
   (println (as-and-bs "aaaaabbbaaaabb"))
   ;(println BOLD)
   (println "hellooo"))
