@@ -8,7 +8,7 @@
 (defn check [pattern input] (not (nil? (re-matches pattern input))))
 
 (deftest simple-bold
-  (is (check BOLD "**Abc**"))
+  (is (not (check BOLD "**Abc**")))
   (is (not (check BOLD "*A"))))
 
 (deftest simple-italics

@@ -23,7 +23,7 @@
 (def PAGE (mk-gmr ["\\[\\[" 'ANY "\\]\\]"]))
 (def REF (mk-gmr ["\\(\\(" 'ANY "\\)\\)"]))
 (def ALIAS (mk-gmr ["\\[" 'ANY "\\]\\(" 'ANY "\\)"]))
-(def IMGS (mk-gmr ["\\[" 'ANY "\\]\\(" 'URLS "\\)"]))
+(def IMGS (mk-gmr ["\\!\\[" 'ANY "\\]\\(" 'URLS "\\)"]))
 
 ;;; Grammar Function
 (defn extract-pages
