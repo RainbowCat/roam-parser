@@ -22,16 +22,16 @@
     (catch RuntimeException e
       (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
-(defparser parse-roam "roam-grammar.bnf" :input-format :abnf)
+(def parse-roam (insta/parser "roam-grammar.bnf" :input-format :abnf))
 
-(def page-parser
-  (insta/parser
-    "
-     left=#'\\[\\['
-     right=#'\\]]\\]]'
-     text=#'.*'
-     <S> = left, text, right
-     "))
+;(def page-parser
+;  (insta/parser
+;    "
+;     left=#'\\[\\['
+;     right=#'\\]]\\]]'
+;     text=#'.*'
+;     <S> = left, text, right
+;     "))
 
 ;(defparser as-and-bs " grammar.bnf " :input-format :abnf)
 

@@ -1,23 +1,33 @@
-; terminals
-ref_start = "(("
-ref_end = "))"
+<block> = [text] (<page> / <ref> / <query>) [text]
 
-page_start = "[["
-page_end = "]]"
+<page> = "[[" *text (<page> / text) *text "]]"
 
-func_start = "{{"
-func_end = "}}"
-
-code_start = "```"
-code_end = "```"
-
-id = 9ALPHA ;hashid for blocks
-text = VCHAR
-
-<page> = "[[" text* <page> text* "]]"
 <ref> = "((" id "))"
 
-<cond> = "{" ("and" / "or" / "not") (<page> | <ref>)+ "}" / "{between:" <date> <date>"}"
-<query_cond> = "{" ("and" / "or" / "not") (<page> | <ref>)* <cond> (<page> | <ref>)* "}"
+<query> = func-start ("query" / "[[query]]") <query-cond> func-end
+<query-cond> = "{" ("and" / "or" / "not") *(<page> / <ref>) <cond> *(<page> / <ref>) "}"
+<cond> = "{" ("and" / "or" / "not") 1*(<page> / <ref>) "}" / "{between:" <date> <date> "}"
 
-<query> = func_start ("query" / "[[query]]") <query_cond> func_end
+<date> = <month> <day> <year>
+<month> = "January" / "February" / "March" / "April"
+            / "May" / "June" / "July" / "August"
+            / "September" / "October" / "November" / "December"
+<day> = ("1" / "21" / "31") "st"
+        / ("2" / "22") "nd"
+        / ("3" / "23") "rd"
+        / ("4" / "5" / "6" / "7" / "8" / "9" / "10"
+            / "11" / "12" / "13" / "14" / "15" / "16" / "17" / "18" / "19" / "20"
+            / "24" / "25" / "26" / "27" / "28" / "29" / "30") "th"
+<year> = 4DIGIT
+
+id = 9ALPHA ;hashid for blocks
+text = *VCHAR
+
+ref-end = "))"
+page-start = "[["
+page-end = "]]"
+func-start = "{{"
+func-end = "}}"
+code-start = "```"
+code-end = "```"
+
