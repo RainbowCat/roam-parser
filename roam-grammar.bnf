@@ -1,42 +1,23 @@
-{
-  tokens=[
-    SEMI=';'
-    EQ='='
-    LP='('
-    RP=')'
+; terminals
+ref_start = "(("
+ref_end = "))"
 
-    space='regexp:\s+'
-    comment='regexp://.*'
-    number='regexp:\d+(\.\d*)?'
-    id='regexp:\p{Alpha}\w*'
-    string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+page_start = "[["
+page_end = "]]"
 
-    op_1='+'
-    op_2='-'
-    op_3='*'
-    op_4='/'
-    op_5='!'
-  ]
+func_start = "{{"
+func_end = "}}"
 
-  name(".*expr")='expression'
-  extends(".*expr")=expr
-}
+code_start = "```"
+code_end = "```"
 
-root ::= root_item *
-private root_item ::= !<<eof>> property ';' {pin=1 recoverWhile=property_recover}
+id = 9ALPHA ;hashid for blocks
+text = VCHAR
 
-property ::= id '=' expr  {pin=2}
-private property_recover ::= !(';' | id '=')
+<page> = "[[" text* <page> text* "]]"
+<ref> = "((" id "))"
 
-expr ::= factor plus_expr *
-left plus_expr ::= plus_op factor
-private plus_op ::= '+'|'-'
-private factor ::= primary mul_expr *
-left mul_expr  ::= mul_op primary
-private mul_op ::= '*'|'/'
-private primary ::= primary_inner factorial_expr ?
-left factorial_expr ::= '!'
-private primary_inner ::= literal_expr | ref_expr | paren_expr
-paren_expr ::= '(' expr ')' {pin=1}
-ref_expr ::= id
-literal_expr ::= number | string | float
+<cond> = "{" ("and" / "or" / "not") (<page> | <ref>)+ "}" / "{between:" <date> <date>"}"
+<query_cond> = "{" ("and" / "or" / "not") (<page> | <ref>)* <cond> (<page> | <ref>)* "}"
+
+<query> = func_start ("query" / "[[query]]") <query_cond> func_end
