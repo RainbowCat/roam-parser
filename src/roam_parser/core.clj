@@ -1,11 +1,10 @@
 (ns roam-parser.core
   "This is the main class for parsing a user's Roam Research graph exported as .edn files."
   (:require
-    [roam-parser.grammar :refer :all]
+    [roam-parser.parser :as parser]
     [clojure.string :as str]
     [clojure.java.io :as io]
     [clojure.edn :as edn]
-    [instaparse.core :as insta :refer [defparser]]
     [datascript.core :as ds :refer [data-readers]])
   (:gen-class))
 
@@ -22,28 +21,8 @@
     (catch RuntimeException e
       (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
-(def parse-roam (insta/parser "roam-grammar.bnf" :input-format :abnf))
-
-;(def page-parser
-;  (insta/parser
-;    "
-;     left=#'\\[\\['
-;     right=#'\\]]\\]]'
-;     text=#'.*'
-;     <S> = left, text, right
-;     "))
-
-;(defparser as-and-bs " grammar.bnf " :input-format :abnf)
-
-(def as-and-bs
-  (insta/parser
-    "S = AB*
-     AB = A B
-     A = 'a'+
-     B = 'b'+"))
-
 (defn -main
   [& args]
-  (println "hellooo")
-  (println (parse-roam "[[A]]"))
+  (println "--- hellooo ---")
+  (println (parser/parse "[[A]]"))
   )
