@@ -1,0 +1,34 @@
+block = *(page / ref / query / LWSP / text / ERROR)
+
+page = "[[" *text (<page> / date / text) *text "]]"
+
+ref = "((" id "))"
+
+query = func-start ("query" / "[[query]]") query-cond func-end
+query-cond = "{" ("and" / "or" / "not") *(page / ref) cond *(page / ref) "}"
+cond = "{" ("and" / "or" / "not") 1*(page / ref) "}" / "{between:" date date "}"
+
+date = month day ", " year
+month = "January" / "February" / "March" / "April"
+            / "May" / "June" / "July" / "August"
+            / "September" / "October" / "November" / "December"
+day = ("1" / "21" / "31") "st"
+        / ("2" / "22") "nd"
+        / ("3" / "23") "rd"
+        / ("4" / "5" / "6" / "7" / "8" / "9" / "10" / "11" / "12" / "13" / "14"
+            / "15" / "16" / "17" / "18" / "19" / "20"/ "24" / "25" / "26" / "27"
+            / "28" / "29" / "30") "th"
+year = 4DIGIT
+
+id = 9(ALPHA / DIGIT) ;hashid for blocks
+text = 1*(LWSP / VCHAR)
+ERROR = %x00
+
+ref-end = "))"
+page-start = "[["
+page-end = "]]"
+func-start = "{{"
+func-end = "}}"
+code-start = "```"
+code-end = "```"
+
